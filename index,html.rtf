@@ -1,0 +1,98 @@
+{\rtf1\ansi\ansicpg1254\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red104\green177\blue255;\red0\green0\blue0;\red252\green99\blue95;
+\red189\green198\blue208;\red111\green230\blue116;\red150\green204\blue255;\red253\green149\blue70;\red198\green146\blue255;
+}
+{\*\expandedcolortbl;;\cssrgb\c47451\c75294\c100000;\cssrgb\c0\c0\c0\c80000;\cssrgb\c100000\c48235\c44706;
+\cssrgb\c78824\c81961\c85098;\cssrgb\c49412\c90588\c52941;\cssrgb\c64706\c83922\c100000;\cssrgb\c100000\c65098\c34118;\cssrgb\c82353\c65882\c100000;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+<!DOCTYPE \cf4 html\cf2 >\cf5 \
+<\cf6 html\cf5  \cf2 lang\cf5 =\cf7 "tr"\cf5 >\
+<\cf6 head\cf5 >\
+    <\cf6 meta\cf5  \cf2 charset\cf5 =\cf7 "UTF-8"\cf5 >\
+    <\cf6 title\cf5 >Game Zone</\cf6 title\cf5 >\
+    <\cf6 script\cf5  \cf2 src\cf5 =\cf7 "https://cdn.tailwindcss.com"\cf5 ></\cf6 script\cf5 >\
+    <\cf6 script\cf5  \cf2 src\cf5 =\cf7 "https://unpkg.com/react@18/umd/react.production.min.js"\cf5 ></\cf6 script\cf5 >\
+    <\cf6 script\cf5  \cf2 src\cf5 =\cf7 "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"\cf5 ></\cf6 script\cf5 >\
+    <\cf6 script\cf5  \cf2 src\cf5 =\cf7 "https://unpkg.com/@babel/standalone/babel.min.js"\cf5 ></\cf6 script\cf5 >\
+    <\cf6 script\cf5  \cf2 src\cf5 =\cf7 "https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"\cf5 ></\cf6 script\cf5 >\
+    <\cf6 script\cf5  \cf2 src\cf5 =\cf7 "https://unpkg.com/lucide@latest"\cf5 ></\cf6 script\cf5 >\
+    <\cf6 style\cf5 >\
+        \cf6 :root\cf5  \{ \cf2 --neon-cyan\cf5 : \cf2 #00f3ff\cf5 ; \cf2 --dark-bg\cf5 : \cf2 #0a0a0c\cf5 ; \}\
+        \cf6 body\cf5  \{ \cf2 background-color\cf5 : \cf8 var\cf5 (--dark-bg); \cf2 color\cf5 : \cf2 #e2e2e2\cf5 ; \cf2 font-family\cf5 : sans-serif; \}\
+        \cf2 .glass\cf5  \{ \cf2 background\cf5 : \cf8 rgba\cf5 (\cf2 22\cf5 , \cf2 22\cf5 , \cf2 26\cf5 , \cf2 0.8\cf5 ); \cf2 backdrop-filter\cf5 : \cf8 blur\cf5 (\cf2 12px\cf5 ); \cf2 border\cf5 : \cf2 1px\cf5  solid \cf8 rgba\cf5 (\cf2 255\cf5 , \cf2 255\cf5 , \cf2 255\cf5 , \cf2 0.05\cf5 ); \}\
+    </\cf6 style\cf5 >\
+</\cf6 head\cf5 >\
+<\cf6 body\cf5 >\
+    <\cf6 div\cf5  \cf2 id\cf5 =\cf7 "root"\cf5 ></\cf6 div\cf5 >\
+    <\cf6 script\cf5  \cf2 type\cf5 =\cf7 "text/babel"\cf5 >\
+        \cf4 const\cf5  \{ useState, useEffect \} = \cf9 React\cf5 ;\
+        \cf4 const\cf5  \cf9 App\cf5  = () => \{\
+            \cf4 const\cf5  [games, setGames] = \cf9 useState\cf5 (() => \cf9 JSON\cf5 .\cf9 parse\cf5 (\cf4 localStorage\cf5 .\cf9 getItem\cf5 (\cf7 'gz_v4'\cf5 ) || \cf7 '[]'\cf5 ));\
+            \cf4 const\cf5  [isAdmin, setIsAdmin] = \cf9 useState\cf5 (\cf2 false\cf5 );\
+            \cf4 const\cf5  [showLogin, setShowLogin] = \cf9 useState\cf5 (\cf2 false\cf5 );\
+            \cf4 const\cf5  [pass, setPass] = \cf9 useState\cf5 (\cf7 ''\cf5 );\
+            \cf9 useEffect\cf5 (() => \{ \cf4 localStorage\cf5 .\cf9 setItem\cf5 (\cf7 'gz_v4'\cf5 , \cf9 JSON\cf5 .\cf9 stringify\cf5 (games)); \}, [games]);\
+            \cf4 if\cf5  (isAdmin) \cf4 return\cf5  (\
+                <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "p-10"\cf5 >\
+                    <\cf6 button\cf5  \cf2 onClick\cf5 =\cf7 \{()\cf5  => setIsAdmin(false)\} className="mb-10 text-cyan-400">\uc0\u8592  Siteye D\'f6n</\cf6 button\cf5 >\
+                    <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "grid grid-cols-1 md:grid-cols-2 gap-10"\cf5 >\
+                        <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "glass p-6 rounded-xl"\cf5 >\
+                            <\cf6 h2\cf5  \cf2 className\cf5 =\cf7 "text-xl font-bold mb-4"\cf5 >Oyun Ekle</\cf6 h2\cf5 >\
+                            <\cf6 input\cf5  \cf2 id\cf5 =\cf7 "t"\cf5  \cf2 placeholder\cf5 =\cf7 "Oyun Ad\uc0\u305 "\cf5  \cf2 className\cf5 =\cf7 "w-full bg-white/5 p-2 mb-2 rounded"\cf5  />\
+                            <\cf6 input\cf5  \cf2 id\cf5 =\cf7 "i"\cf5  \cf2 placeholder\cf5 =\cf7 "Resim URL"\cf5  \cf2 className\cf5 =\cf7 "w-full bg-white/5 p-2 mb-2 rounded"\cf5  />\
+                            <\cf6 textarea\cf5  \cf2 id\cf5 =\cf7 "d"\cf5  \cf2 placeholder\cf5 =\cf7 "A\'e7\uc0\u305 klama"\cf5  \cf2 className\cf5 =\cf7 "w-full bg-white/5 p-2 mb-4 rounded"\cf5 ></\cf6 textarea\cf5 >\
+                            <\cf6 button\cf5  \cf2 onClick\cf5 =\cf7 \{()\cf5  => \{\
+                                const n = \{ id: Date.now(), title: document.getElementById('t').value, image: document.getElementById('i').value, description: document.getElementById('d').value \};\
+                                setGames([...games, n]);\
+                                alert('Eklendi!');\
+                            \}\} className="w-full bg-cyan-500 text-black font-bold py-2 rounded">KAYDET</\cf6 button\cf5 >\
+                        </\cf6 div\cf5 >\
+                        <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "space-y-2"\cf5 >\
+                            \{games.map(g => (\
+                                <\cf6 div\cf5  \cf2 key\cf5 =\cf7 \{g.id\}\cf5  \cf2 className\cf5 =\cf7 "glass p-4 flex justify-between"\cf5 >\
+                                    <\cf6 span\cf5 >\{g.title\}</\cf6 span\cf5 >\
+                                    <\cf6 button\cf5  \cf2 onClick\cf5 =\cf7 \{()\cf5  => setGames(games.filter(x => x.id !== g.id))\} className="text-red-500">Sil</\cf6 button\cf5 >\
+                                </\cf6 div\cf5 >\
+                            ))\}\
+                        </\cf6 div\cf5 >\
+                    </\cf6 div\cf5 >\
+                </\cf6 div\cf5 >\
+            );\
+            \cf4 return\cf5  (\
+                <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "min-h-screen"\cf5 >\
+                    <\cf6 nav\cf5  \cf2 className\cf5 =\cf7 "p-6 glass flex justify-between items-center"\cf5 >\
+                        <\cf6 span\cf5  \cf2 className\cf5 =\cf7 "text-2xl font-black"\cf5 >GAME ZONE</\cf6 span\cf5 >\
+                        <\cf6 button\cf5  \cf2 onClick\cf5 =\cf7 \{()\cf5  => setShowLogin(true)\} className="bg-white/10 p-2 rounded-full">Admin</\cf6 button\cf5 >\
+                    </\cf6 nav\cf5 >\
+                    <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "p-10 grid grid-cols-1 md:grid-cols-4 gap-6"\cf5 >\
+                        \{games.map(g => (\
+                            <\cf6 div\cf5  \cf2 key\cf5 =\cf7 \{g.id\}\cf5  \cf2 className\cf5 =\cf7 "glass rounded-xl overflow-hidden"\cf5 >\
+                                <\cf6 img\cf5  \cf2 src\cf5 =\cf7 \{g.image\}\cf5  \cf2 className\cf5 =\cf7 "h-40 w-full object-cover"\cf5  />\
+                                <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "p-4 font-bold"\cf5 >\{g.title\}</\cf6 div\cf5 >\
+                            </\cf6 div\cf5 >\
+                        ))\}\
+                    </\cf6 div\cf5 >\
+                    \{games.length === 0 && <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "text-center opacity-20 text-2xl mt-20"\cf5 >Hen\'fcz oyun yok.</\cf6 div\cf5 >\}\
+                    \{showLogin && (\
+                        <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "fixed inset-0 bg-black/90 flex items-center justify-center"\cf5 >\
+                            <\cf6 div\cf5  \cf2 className\cf5 =\cf7 "glass p-8 rounded-xl text-center"\cf5 >\
+                                <\cf6 h3\cf5  \cf2 className\cf5 =\cf7 "mb-4 font-bold"\cf5 >Giri\uc0\u351  (\u350 ifre: admin)</\cf6 h3\cf5 >\
+                                <\cf6 input\cf5  \cf2 type\cf5 =\cf7 "password"\cf5  \cf2 value\cf5 =\cf7 \{pass\}\cf5  \cf2 onChange\cf5 =\cf7 \{e\cf5 =>setPass(e.target.value)\} className="bg-white/10 p-2 mb-4 block w-full rounded" />\
+                                <\cf6 button\cf5  \cf2 onClick\cf5 =\cf7 \{()\cf5  => pass === 'admin' ? (setIsAdmin(true), setShowLogin(false)) : alert('Hata')\} className="bg-cyan-500 text-black px-10 py-2 rounded font-bold">G\uc0\u304 R\u304 \u350 </\cf6 button\cf5 >\
+                                <\cf6 button\cf5  \cf2 onClick\cf5 =\cf7 \{()\cf5  => setShowLogin(false)\} className="block w-full mt-4 text-gray-500">Kapat</\cf6 button\cf5 >\
+                            </\cf6 div\cf5 >\
+                        </\cf6 div\cf5 >\
+                    )\}\
+                </\cf6 div\cf5 >\
+            );\
+        \};\
+        \cf9 ReactDOM\cf5 .\cf9 createRoot\cf5 (\cf4 document\cf5 .\cf9 getElementById\cf5 (\cf7 'root'\cf5 )).\cf9 render\cf5 (<\cf6 App\cf5  />);\
+    </\cf6 script\cf5 >\
+</\cf6 body\cf5 >\
+</\cf6 html\cf5 >}
