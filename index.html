@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>GAMEZONE - Oyunları Aç, Sınırları Parçala</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -10,91 +11,62 @@
     body { background: linear-gradient(135deg, #0f0f1e, #1a0033); }
     .game-card { transition: all 0.3s; }
     .game-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 20px 25px -5px rgb(147 51 234); }
-    .modal { animation: fadeIn 0.3s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .neon-text { text-shadow: 0 0 20px rgb(168 85 247); }
   </style>
 </head>
 <body class="text-white">
 
-  <!-- HEADER -->
   <header class="border-b border-purple-500 bg-black/50 backdrop-blur-md fixed w-full z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <h1 class="text-3xl font-bold flex items-center gap-3">
         <span class="text-purple-500">🎮</span> GAMEZONE
       </h1>
-      <p class="text-sm text-purple-400 font-mono">V2.0 • Güncellendi</p>
+      <p class="text-sm text-purple-400 font-mono">V2.2 • İndirme Linki Görünür</p>
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="min-h-screen flex items-center justify-center text-center pt-20">
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-6xl md:text-7xl font-bold mb-6 neon-text">
         Oyunları aç.<br><span class="text-purple-400">Sınırları parçala.</span>
       </h2>
-      <p class="text-xl text-gray-300 mb-10">
-        En iyi ücretsiz oyunlar • Kayıt yok • İndirme yok • Anında oyna
-      </p>
-      <a href="#games" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xl px-10 py-4 rounded-xl inline-flex items-center gap-3 transition">
-        <i class="fas fa-gamepad"></i> Oyunlara Göz At
+      <a href="#games" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xl px-10 py-4 rounded-xl inline-flex items-center gap-3">
+        Oyunlara Göz At
       </a>
     </div>
   </section>
 
-  <!-- OYUNLAR -->
   <section id="games" class="max-w-7xl mx-auto px-6 py-20">
     <h2 class="text-4xl font-bold text-center mb-12 text-purple-400">Kütüphanemiz</h2>
-    
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="gameGrid">
-      <!-- JavaScript ile doldurulacak -->
-    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="gameGrid"></div>
   </section>
 
-  <!-- NASIL ÇALIŞIR -->
-  <section class="bg-black/40 py-16">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-12">3 Adımda Oyna</h2>
-      <div class="grid md:grid-cols-3 gap-8 text-center">
-        <div class="bg-purple-950/30 p-8 rounded-2xl">
-          <div class="text-5xl mb-4">01</div>
-          <h3 class="text-2xl font-bold mb-3">Oyun Seç</h3>
-          <p class="text-gray-400">Beğendiğin oyunu bul ve tıkla.</p>
-        </div>
-        <div class="bg-purple-950/30 p-8 rounded-2xl">
-          <div class="text-5xl mb-4">02</div>
-          <h3 class="text-2xl font-bold mb-3">Hemen Başla</h3>
-          <p class="text-gray-400">Tarayıcıda veya indirerek oyna.</p>
-        </div>
-        <div class="bg-purple-950/30 p-8 rounded-2xl">
-          <div class="text-5xl mb-4">03</div>
-          <h3 class="text-2xl font-bold mb-3">Eğlen!</h3>
-          <p class="text-gray-400">Sınırsız eğlence seni bekliyor.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MODAL -->
+  <!-- MODAL - İNDİRME LİNKİ GÖRÜNÜR -->
   <div id="gameModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[100]">
-    <div class="modal bg-gray-900 rounded-3xl max-w-lg w-full mx-4 overflow-hidden">
+    <div class="bg-gray-900 rounded-3xl max-w-md w-full mx-4 overflow-hidden">
       <div class="p-6">
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-start mb-6">
           <h3 id="modalTitle" class="text-3xl font-bold"></h3>
-          <button onclick="closeModal()" class="text-4xl text-gray-500 hover:text-white">×</button>
+          <button onclick="closeModal()" class="text-4xl leading-none text-gray-500 hover:text-white">×</button>
         </div>
         <p id="modalDesc" class="text-gray-400 mb-8"></p>
 
-        <div class="flex flex-col gap-4">
+        <div class="space-y-6">
           <button onclick="playGame()" 
-                  class="bg-emerald-600 hover:bg-emerald-700 py-5 text-xl font-bold rounded-2xl flex items-center justify-center gap-3 transition">
-            <i class="fas fa-play"></i> 🎮 TARAYICIDA OYNA
+                  class="w-full bg-emerald-600 hover:bg-emerald-700 py-5 rounded-2xl text-xl font-bold flex items-center justify-center gap-3">
+            🎮 TARAYICIDA OYNA
           </button>
-          
-          <button onclick="downloadGame()" 
-                  class="bg-purple-600 hover:bg-purple-700 py-5 text-xl font-bold rounded-2xl flex items-center justify-center gap-3 transition">
-            <i class="fas fa-download"></i> ⬇️ APK İNDİR
-          </button>
+
+          <div>
+            <p class="text-purple-400 text-sm mb-2 font-medium">⬇️ APK İNDİR</p>
+            <button onclick="downloadGame()" 
+                    class="w-full bg-purple-600 hover:bg-purple-700 py-4 rounded-2xl text-lg font-bold mb-3">
+              APK Dosyasını İndir
+            </button>
+            <a id="downloadLink" href="#" target="_blank"
+               class="block text-center text-sm text-purple-300 hover:text-purple-400 break-all underline">
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -104,83 +76,55 @@
     const games = [
       {
         name: "Slope",
-        desc: "3D sonsuz koşu oyunu. En yüksek skoru yap!",
+        desc: "3D sonsuz koşu oyunu. Yüksek skor yapmaya çalış!",
         playLink: "https://slope-game.io/",
-        downloadLink: "#"   // Buraya kendi APK linkini koy
+        downloadLink: "https://example.com/slope.apk"        // ← Buraya kendi linkini yaz
       },
       {
         name: "Retro Bowl",
-        desc: "Retro tarzı Amerikan futbolu oyunu.",
+        desc: "Retro tarzı Amerikan futbolu oyunu",
         playLink: "https://retrobowl.me/",
-        downloadLink: "#"
-      },
-      {
-        name: "2048",
-        desc: "Klasik sayı birleştirme oyunu.",
-        playLink: "https://play2048.co/",
-        downloadLink: "#"
+        downloadLink: "https://example.com/retrobowl.apk"
       },
       {
         name: "Subway Surfers",
-        desc: "Sonsuz koşucu. Polislerden kaç!",
+        desc: "Polislerden kaçan klasik koşu oyunu",
         playLink: "https://poki.com/tr/g/subway-surfers",
-        downloadLink: "#"
+        downloadLink: "https://example.com/subway.apk"
       },
       {
         name: "Geometry Dash",
-        desc: "Ritme göre zıpla ve engellerden kaç.",
+        desc: "Müzik ritmine göre zor platform oyunu",
         playLink: "https://geometrydash.io/",
-        downloadLink: "#"
-      },
-      {
-        name: "Drift Hunters",
-        desc: "Gerçekçi drift simulator.",
-        playLink: "https://drifthunters.io/",
-        downloadLink: "#"
-      },
-      {
-        name: "Moto X3M",
-        desc: "Motorsikletle tehlikeli pistlerde yarış.",
-        playLink: "https://motox3m.io/",
-        downloadLink: "#"
-      },
-      {
-        name: "Happy Wheels",
-        desc: "Korkunç ve komik fizik motoru oyunu.",
-        playLink: "https://happywheelsunblocked.dev/",
-        downloadLink: "#"
+        downloadLink: "https://example.com/geometry.apk"
       }
     ];
 
     function renderGames() {
       const grid = document.getElementById('gameGrid');
-      grid.innerHTML = '';
-      
-      games.forEach(game => {
-        const card = document.createElement('div');
-        card.className = "game-card bg-gray-900 rounded-2xl overflow-hidden cursor-pointer border border-purple-500/20";
-        card.innerHTML = `
-          <div class="h-40 bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-6xl">
-            🎮
-          </div>
+      grid.innerHTML = games.map(game => `
+        <div onclick='openModal(${JSON.stringify(game)})' 
+             class="game-card bg-gray-900 rounded-2xl overflow-hidden cursor-pointer border border-purple-500/30 hover:border-purple-500">
+          <div class="h-44 bg-gradient-to-br from-purple-600 to-violet-600 flex items-center justify-center text-6xl">🎮</div>
           <div class="p-4">
-            <h3 class="text-xl font-bold mb-1">${game.name}</h3>
-            <p class="text-gray-400 text-sm line-clamp-2">${game.desc}</p>
+            <h3 class="font-bold text-xl mb-1">${game.name}</h3>
+            <p class="text-gray-400 text-sm">${game.desc}</p>
           </div>
-        `;
-        card.onclick = () => openModal(game);
-        grid.appendChild(card);
-      });
+        </div>
+      `).join('');
     }
 
     let currentGame = {};
-
     function openModal(game) {
       currentGame = game;
       document.getElementById('modalTitle').textContent = game.name;
       document.getElementById('modalDesc').textContent = game.desc;
-      document.getElementById('gameModal').classList.remove('hidden');
-      document.getElementById('gameModal').classList.add('flex');
+      document.getElementById('downloadLink').href = game.downloadLink;
+      document.getElementById('downloadLink').textContent = game.downloadLink;
+      
+      const modal = document.getElementById('gameModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     }
 
     function closeModal() {
@@ -190,35 +134,24 @@
     }
 
     function playGame() {
-      if (currentGame.playLink && currentGame.playLink !== "#") {
-        window.open(currentGame.playLink, '_blank');
-      } else {
-        alert("Bu oyunun tarayıcı linki henüz eklenmedi.");
-      }
+      window.open(currentGame.playLink, '_blank');
       closeModal();
     }
 
     function downloadGame() {
-      if (currentGame.downloadLink && currentGame.downloadLink !== "#") {
-        const a = document.createElement('a');
-        a.href = currentGame.downloadLink;
-        a.download = currentGame.name + ".apk";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+      if (currentGame.downloadLink && !currentGame.downloadLink.includes("example.com")) {
+        window.open(currentGame.downloadLink, '_blank');
       } else {
-        alert("İndirme linkini henüz eklemedin.\n\nİndirme linkini 'downloadLink' kısmına yaz.");
+        alert("Lütfen downloadLink kısmına gerçek indirme linkini koyun (MediaFire, Google Drive vb.)");
       }
       closeModal();
     }
 
-    // Sayfa yüklendiğinde oyunları göster
     window.onload = renderGames;
   </script>
 
-  <footer class="text-center py-10 text-gray-500 text-sm">
-    GameZone V2.0 • Musa Dursun<br>
-    Tüm oyunlar eğlence amaçlıdır.
+  <footer class="text-center py-12 text-gray-500 text-sm">
+    GameZone V2.2 • Musa Dursun
   </footer>
 </body>
 </html>
