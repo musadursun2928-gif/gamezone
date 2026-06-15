@@ -1,224 +1,224 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 GAMEZONE</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAMEZONE - Oyunları Aç, Sınırları Parçala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { background: linear-gradient(135deg, #0f0f1e, #1a0033); }
+    .game-card { transition: all 0.3s; }
+    .game-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 20px 25px -5px rgb(147 51 234); }
+    .modal { animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .neon-text { text-shadow: 0 0 20px rgb(168 85 247); }
+  </style>
 </head>
-<body>
+<body class="text-white">
 
-<!-- Header -->
-<header class="header">
-    <div class="container header-inner">
-        <a href="#" class="logo">🎮 GAMEZONE</a>
-        <nav class="nav">
-            <a href="#" class="nav-link active">ANA SAYFA</a>
-            <a href="#games" class="nav-link">OYUNLAR</a>
-            <a href="#about" class="nav-link">HAKKIMIZDA</a>
-            <a href="#contact" class="nav-link">İLETİŞİM</a>
-        </nav>
-        <!-- Admin: logoyu 3 kere tıkla -->
+  <!-- HEADER -->
+  <header class="border-b border-purple-500 bg-black/50 backdrop-blur-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-3xl font-bold flex items-center gap-3">
+        <span class="text-purple-500">🎮</span> GAMEZONE
+      </h1>
+      <p class="text-sm text-purple-400 font-mono">V2.0 • Güncellendi</p>
     </div>
-</header>
+  </header>
 
-<!-- Hero -->
-<section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-        <p class="hero-tag">// GAMEZONE V1.0</p>
-        <h1 class="hero-title">
-            Oyunları <span class="cyan">aç</span><span class="pink">.</span><br>
-            Sınırları <span class="pink">parçala</span><span class="cyan">.</span>
-        </h1>
-        <p class="hero-desc">GameZone, en iyi ücretsiz oyunları keşfedebileceğin yer.<br>Modern, hızlı, ücretsiz — sadece oyna.</p>
-        <div class="hero-buttons">
-            <a href="#games" class="btn btn-primary">OYUNLARI KEŞFET</a>
-            <a href="#about" class="btn btn-outline">NASIL ÇALIŞIR?</a>
+  <!-- HERO -->
+  <section class="min-h-screen flex items-center justify-center text-center pt-20">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-6xl md:text-7xl font-bold mb-6 neon-text">
+        Oyunları aç.<br><span class="text-purple-400">Sınırları parçala.</span>
+      </h2>
+      <p class="text-xl text-gray-300 mb-10">
+        En iyi ücretsiz oyunlar • Kayıt yok • İndirme yok • Anında oyna
+      </p>
+      <a href="#games" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xl px-10 py-4 rounded-xl inline-flex items-center gap-3 transition">
+        <i class="fas fa-gamepad"></i> Oyunlara Göz At
+      </a>
+    </div>
+  </section>
+
+  <!-- OYUNLAR -->
+  <section id="games" class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="text-4xl font-bold text-center mb-12 text-purple-400">Kütüphanemiz</h2>
+    
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="gameGrid">
+      <!-- JavaScript ile doldurulacak -->
+    </div>
+  </section>
+
+  <!-- NASIL ÇALIŞIR -->
+  <section class="bg-black/40 py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">3 Adımda Oyna</h2>
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        <div class="bg-purple-950/30 p-8 rounded-2xl">
+          <div class="text-5xl mb-4">01</div>
+          <h3 class="text-2xl font-bold mb-3">Oyun Seç</h3>
+          <p class="text-gray-400">Beğendiğin oyunu bul ve tıkla.</p>
         </div>
-    </div>
-</section>
-
-<!-- Ticker -->
-<div class="ticker">
-    <div class="ticker-track">
-        <span>◆ 100% FREE</span>
-        <span>◆ ANINDA OYNA</span>
-        <span>◆ KAYIT GEREKTIRMEZ</span>
-        <span>◆ MOBİL UYUMLU</span>
-        <span>◆ HER GÜN YENİ OYUN</span>
-        <span>◆ HIZLI YÜKLENİR</span>
-        <span>◆ 100% FREE</span>
-        <span>◆ ANINDA OYNA</span>
-        <span>◆ KAYIT GEREKTIRMEZ</span>
-        <span>◆ MOBİL UYUMLU</span>
-        <span>◆ HER GÜN YENİ OYUN</span>
-        <span>◆ HIZLI YÜKLENİR</span>
-    </div>
-</div>
-
-<!-- Games Section -->
-<section class="section" id="games">
-    <div class="container">
-        <div class="section-header">
-            <p class="section-tag">// KÜTÜPHANEMİZ</p>
-            <h2 class="section-title">Oyunlar</h2>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Oyun ara...">
-            </div>
+        <div class="bg-purple-950/30 p-8 rounded-2xl">
+          <div class="text-5xl mb-4">02</div>
+          <h3 class="text-2xl font-bold mb-3">Hemen Başla</h3>
+          <p class="text-gray-400">Tarayıcıda veya indirerek oyna.</p>
         </div>
-        <div class="games-grid" id="gamesGrid"></div>
-        <div class="no-results" id="noResults" style="display:none;">
-            <p>😕 Henüz oyun eklenmedi. Admin panelinden oyun yükleyebilirsin!</p>
+        <div class="bg-purple-950/30 p-8 rounded-2xl">
+          <div class="text-5xl mb-4">03</div>
+          <h3 class="text-2xl font-bold mb-3">Eğlen!</h3>
+          <p class="text-gray-400">Sınırsız eğlence seni bekliyor.</p>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- About Section -->
-<section class="section section-dark" id="about">
-    <div class="container">
-        <p class="section-tag">// NASIL ÇALIŞIR?</p>
-        <h2 class="section-title">3 Adımda Oyna</h2>
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-number">01</div>
-                <h3>Oyun Seç</h3>
-                <p>Kütüphaneden istediğin oyunu bul ve tıkla.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">02</div>
-                <h3>Hemen Oyna</h3>
-                <p>İndirme yok, kayıt yok. Tarayıcında anında başla.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">03</div>
-                <h3>Eğlen</h3>
-                <p>Arkadaşlarınla paylaş, birlikte eğlenin!</p>
-            </div>
+  <!-- MODAL -->
+  <div id="gameModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[100]">
+    <div class="modal bg-gray-900 rounded-3xl max-w-lg w-full mx-4 overflow-hidden">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="modalTitle" class="text-3xl font-bold"></h3>
+          <button onclick="closeModal()" class="text-4xl text-gray-500 hover:text-white">×</button>
         </div>
-    </div>
-</section>
+        <p id="modalDesc" class="text-gray-400 mb-8"></p>
 
-<!-- Contact Section -->
-<section class="section" id="contact">
-    <div class="container contact-center">
-        <p class="section-tag">// İLETİŞİM</p>
-        <h2 class="section-title">Bize Ulaş</h2>
-        <p class="contact-desc">Soru, öneri veya oyun isteğin mi var? Bize yaz!</p>
-        <a href="mailto:info@gamezone.com" class="btn btn-primary">MAİL GÖNDER</a>
-    </div>
-</section>
-
-<!-- Game Modal -->
-<div class="modal-overlay" id="gameModal">
-    <div class="modal">
-        <button class="modal-close" id="modalClose">&times;</button>
-        <h2 class="modal-title" id="modalTitle"></h2>
-        <div class="modal-game-container" id="modalGameContainer"></div>
-        <div class="modal-info">
-            <span class="modal-category" id="modalCategory"></span>
-            <span class="modal-plays" id="modalPlays"></span>
+        <div class="flex flex-col gap-4">
+          <button onclick="playGame()" 
+                  class="bg-emerald-600 hover:bg-emerald-700 py-5 text-xl font-bold rounded-2xl flex items-center justify-center gap-3 transition">
+            <i class="fas fa-play"></i> 🎮 TARAYICIDA OYNA
+          </button>
+          
+          <button onclick="downloadGame()" 
+                  class="bg-purple-600 hover:bg-purple-700 py-5 text-xl font-bold rounded-2xl flex items-center justify-center gap-3 transition">
+            <i class="fas fa-download"></i> ⬇️ APK İNDİR
+          </button>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- Upload Modal -->
-<div class="modal-overlay" id="uploadModal">
-    <div class="modal upload-modal">
-        <button class="modal-close" id="uploadClose">&times;</button>
-        <h2>🎮 Oyun Yükle</h2>
-        <form id="uploadForm">
-            <label>Oyun Adı
-                <input type="text" id="uploadName" required placeholder="Örn: Süper Macera">
-            </label>
-            <label>Kategori
-                <select id="uploadCategory">
-                    <option value="aksiyon">Aksiyon</option>
-                    <option value="bulmaca">Bulmaca</option>
-                    <option value="yarış">Yarış</option>
-                    <option value="spor">Spor</option>
-                    <option value="strateji">Strateji</option>
-                </select>
-            </label>
-            <label>Oyun URL (link)
-                <input type="url" id="uploadUrl" placeholder="https://ornek.com/oyun" required>
-            </label>
-            <label>Kapak Resmi (opsiyonel)
-                <input type="file" id="uploadImage" accept="image/*">
-            </label>
-            <button type="submit" class="btn-upload">YÜKLE</button>
-        </form>
-        <div id="uploadStatus" class="upload-status"></div>
-    </div>
-</div>
+  <script>
+    const games = [
+      {
+        name: "Slope",
+        desc: "3D sonsuz koşu oyunu. En yüksek skoru yap!",
+        playLink: "https://slope-game.io/",
+        downloadLink: "#"   // Buraya kendi APK linkini koy
+      },
+      {
+        name: "Retro Bowl",
+        desc: "Retro tarzı Amerikan futbolu oyunu.",
+        playLink: "https://retrobowl.me/",
+        downloadLink: "#"
+      },
+      {
+        name: "2048",
+        desc: "Klasik sayı birleştirme oyunu.",
+        playLink: "https://play2048.co/",
+        downloadLink: "#"
+      },
+      {
+        name: "Subway Surfers",
+        desc: "Sonsuz koşucu. Polislerden kaç!",
+        playLink: "https://poki.com/tr/g/subway-surfers",
+        downloadLink: "#"
+      },
+      {
+        name: "Geometry Dash",
+        desc: "Ritme göre zıpla ve engellerden kaç.",
+        playLink: "https://geometrydash.io/",
+        downloadLink: "#"
+      },
+      {
+        name: "Drift Hunters",
+        desc: "Gerçekçi drift simulator.",
+        playLink: "https://drifthunters.io/",
+        downloadLink: "#"
+      },
+      {
+        name: "Moto X3M",
+        desc: "Motorsikletle tehlikeli pistlerde yarış.",
+        playLink: "https://motox3m.io/",
+        downloadLink: "#"
+      },
+      {
+        name: "Happy Wheels",
+        desc: "Korkunç ve komik fizik motoru oyunu.",
+        playLink: "https://happywheelsunblocked.dev/",
+        downloadLink: "#"
+      }
+    ];
 
-<!-- Admin Login Modal -->
-<div class="modal-overlay" id="adminLoginModal">
-    <div class="modal" style="max-width:380px; text-align:center;">
-        <button class="modal-close" id="adminLoginClose">&times;</button>
-        <div style="font-size:3rem; margin-bottom:16px;">🔒</div>
-        <h2 class="modal-title">ADMİN GİRİŞİ</h2>
-        <p style="font-size:0.8rem; color:#8892a4; margin-bottom:24px;">Devam etmek için şifre gir</p>
-        <form id="adminLoginForm">
-            <input type="password" id="adminPassword" placeholder="Şifre..." required style="width:100%; padding:12px 16px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#fff; font-size:1rem; text-align:center; outline:none; margin-bottom:14px;">
-            <button type="submit" class="btn-upload" style="font-family:'Orbitron',sans-serif; letter-spacing:2px;">GİRİŞ YAP</button>
-        </form>
-        <p id="adminLoginError" style="color:#f87171; margin-top:12px; font-size:0.85rem;"></p>
-    </div>
-</div>
+    function renderGames() {
+      const grid = document.getElementById('gameGrid');
+      grid.innerHTML = '';
+      
+      games.forEach(game => {
+        const card = document.createElement('div');
+        card.className = "game-card bg-gray-900 rounded-2xl overflow-hidden cursor-pointer border border-purple-500/20";
+        card.innerHTML = `
+          <div class="h-40 bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-6xl">
+            🎮
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-bold mb-1">${game.name}</h3>
+            <p class="text-gray-400 text-sm line-clamp-2">${game.desc}</p>
+          </div>
+        `;
+        card.onclick = () => openModal(game);
+        grid.appendChild(card);
+      });
+    }
 
-<!-- Admin Panel Modal -->
-<div class="modal-overlay" id="adminPanelModal">
-    <div class="modal" style="max-width:700px;">
-        <button class="modal-close" id="adminPanelClose">&times;</button>
-        <h2 class="modal-title" style="color:#00e5ff;">🎮 ADMİN PANELİ</h2>
+    let currentGame = {};
 
-        <!-- Add Game -->
-        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:20px; margin-bottom:20px;">
-            <h3 style="font-family:'Orbitron',sans-serif; font-size:0.75rem; color:#00e5ff; letter-spacing:2px; margin-bottom:16px;">➕ YENİ OYUN EKLE</h3>
-            <form id="adminAddForm">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
-                    <input type="text" id="adminGameName" placeholder="Oyun Adı" required style="padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#fff; font-size:0.85rem; outline:none;">
-                    <select id="adminGameCategory" style="padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#fff; font-size:0.85rem; outline:none;">
-                        <option value="aksiyon">Aksiyon</option>
-                        <option value="bulmaca">Bulmaca</option>
-                        <option value="yarış">Yarış</option>
-                        <option value="spor">Spor</option>
-                        <option value="strateji">Strateji</option>
-                    </select>
-                </div>
-                <input type="url" id="adminGameUrl" placeholder="Oyun URL (link)" required style="width:100%; padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#fff; font-size:0.85rem; outline:none; margin-bottom:12px;">
-                <input type="url" id="adminGameImage" placeholder="Kapak Resmi URL (opsiyonel)" style="width:100%; padding:10px 14px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); color:#fff; font-size:0.85rem; outline:none; margin-bottom:12px;">
-                <button type="submit" class="btn-upload" style="font-family:'Orbitron',sans-serif; letter-spacing:2px;">OYUN EKLE</button>
-            </form>
-            <p id="adminAddStatus" style="text-align:center; margin-top:10px; font-size:0.85rem;"></p>
-        </div>
+    function openModal(game) {
+      currentGame = game;
+      document.getElementById('modalTitle').textContent = game.name;
+      document.getElementById('modalDesc').textContent = game.desc;
+      document.getElementById('gameModal').classList.remove('hidden');
+      document.getElementById('gameModal').classList.add('flex');
+    }
 
-        <!-- Game List -->
-        <div>
-            <h3 style="font-family:'Orbitron',sans-serif; font-size:0.75rem; color:#ff2d7b; letter-spacing:2px; margin-bottom:12px;">📋 MEVCUT OYUNLAR</h3>
-            <div id="adminGameList"></div>
-        </div>
-    </div>
-</div>
+    function closeModal() {
+      const modal = document.getElementById('gameModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container footer-inner">
-        <span class="logo-small">🎮 GAMEZONE</span>
-        <p>&copy; 2025 GameZone — Tüm hakları saklıdır.</p>
-    </div>
-</footer>
+    function playGame() {
+      if (currentGame.playLink && currentGame.playLink !== "#") {
+        window.open(currentGame.playLink, '_blank');
+      } else {
+        alert("Bu oyunun tarayıcı linki henüz eklenmedi.");
+      }
+      closeModal();
+    }
 
-<script src="app.js"></script>
+    function downloadGame() {
+      if (currentGame.downloadLink && currentGame.downloadLink !== "#") {
+        const a = document.createElement('a');
+        a.href = currentGame.downloadLink;
+        a.download = currentGame.name + ".apk";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        alert("İndirme linkini henüz eklemedin.\n\nİndirme linkini 'downloadLink' kısmına yaz.");
+      }
+      closeModal();
+    }
+
+    // Sayfa yüklendiğinde oyunları göster
+    window.onload = renderGames;
+  </script>
+
+  <footer class="text-center py-10 text-gray-500 text-sm">
+    GameZone V2.0 • Musa Dursun<br>
+    Tüm oyunlar eğlence amaçlıdır.
+  </footer>
 </body>
 </html>
-<a href="BURAYA_GOOGLE_DRIVE_VEYA_MEGA_LINKINI_YAZ" target="_blank" style="text-decoration: none;">
-    <div class="game-card">
-        <img src="oyun-resmi.jpg" alt="Oyun">
-        <h3>Oyununun Adı</h3>
-        <p>Oyununun harika açıklaması buraya gelecek.</p>
-    </div>
-</a>
