@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 GameZone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container header-inner">
+        <a href="#" class="logo">🎮 <span>GameZone</span></a>
+        <nav class="nav">
+            <a href="#" class="nav-link active" data-category="all">Tümü</a>
+            <a href="#" class="nav-link" data-category="aksiyon">Aksiyon</a>
+            <a href="#" class="nav-link" data-category="bulmaca">Bulmaca</a>
+            <a href="#" class="nav-link" data-category="yarış">Yarış</a>
+            <a href="#" class="nav-link" data-category="spor">Spor</a>
+            <a href="#" class="nav-link" data-category="strateji">Strateji</a>
+        </nav>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Oyun ara...">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <h1>GameZone</h1>
+        <p>Oyun dünyasına hoş geldin!</p>
+    </div>
+</section>
+
+<!-- Games Grid -->
+<main class="container">
+    <div class="section-header">
+        <h2 id="sectionTitle">🔥 Tüm Oyunlar</h2>
+        <span id="gameCount" class="game-count"></span>
+    </div>
+    <div class="games-grid" id="gamesGrid">
+        <!-- Games injected by JS -->
+    </div>
+    <div class="no-results" id="noResults" style="display:none;">
+        <p>😕 Oyun bulunamadı</p>
+    </div>
+</main>
+
+<!-- Game Modal -->
+<div class="modal-overlay" id="gameModal">
+    <div class="modal">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-game-container" id="modalGameContainer">
+            <!-- iframe injected here -->
+        </div>
+        <div class="modal-info">
+            <span class="modal-category" id="modalCategory"></span>
+            <span class="modal-plays" id="modalPlays"></span>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal-overlay" id="uploadModal">
+    <div class="modal upload-modal">
+        <button class="modal-close" id="uploadClose">&times;</button>
+        <h2>🎮 Oyun Yükle</h2>
+        <form id="uploadForm">
+            <label>Oyun Adı
+                <input type="text" id="uploadName" required placeholder="Örn: Süper Macera">
+            </label>
+            <label>Kategori
+                <select id="uploadCategory">
+                    <option value="aksiyon">Aksiyon</option>
+                    <option value="bulmaca">Bulmaca</option>
+                    <option value="yarış">Yarış</option>
+                    <option value="spor">Spor</option>
+                    <option value="strateji">Strateji</option>
+                </select>
+            </label>
+            <label>Oyun Dosyası (ZIP veya HTML)
+                <input type="file" id="uploadFile" accept=".zip,.html,.htm" required>
+            </label>
+            <label>Kapak Resmi (opsiyonel)
+                <input type="file" id="uploadImage" accept="image/*">
+            </label>
+            <button type="submit" class="btn-upload">Yükle</button>
+        </form>
+        <div id="uploadStatus" class="upload-status"></div>
+    </div>
+</div>
+
+<!-- Floating Upload Button -->
+<button class="fab" id="fabUpload" title="Oyun Yükle">＋</button>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2025 GameZone — Tüm hakları saklıdır.</p>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
