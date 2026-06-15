@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Y GameZone - Ultimate Oyun Deneyimi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap');
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff006e;
+            --bg-dark: #050505;
+            --bg-card: #0a0a0a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(188, 19, 254, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Side Characters */
+        .side-character {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 600px;
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 0 20px var(--neon-blue));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .side-character.left {
+            left: 0;
+            background: linear-gradient(90deg, rgba(0,243,255,0.2) 0%, transparent 100%);
+        }
+
+        .side-character.right {
+            right: 0;
+            background: linear-gradient(-90deg, rgba(188,19,254,0.2) 0%, transparent 100%);
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(-50%) translateY(0px); }
+            50% { transform: translateY(-50%) translateY(-20px); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0,0,0,0.9);
+            border-bottom: 3px solid var(--neon-purple);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--neon-purple);
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .logo span { 
+            color: var(--neon-purple); 
+            text-shadow: 0 0 20px var(--neon-purple);
+        }
+
+        nav { 
+            display: flex; 
+            gap: 30px; 
+            align-items: center;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            transition: 0.3s;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        nav a:hover { 
+            color: var(--neon-blue); 
+            text-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* ADMIN BUTTON - ÇOK BELİRGİN */
+        .admin-btn-container {
+            position: relative;
+        }
+
+        #adminBtn {
+            display: none;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+            padding: 12px 25px;
+            border-radius: 25px;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.8);
+            border: 2px solid #fff;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            animation: adminGlow 2s infinite;
+        }
+
+        @keyframes adminGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(188, 19, 254, 0.8); }
+            50% { box-shadow: 0 0 40px rgba(188, 19, 254, 1), 0 0 60px rgba(255, 0, 110, 0.6); }
+        }
+
+        #adminBtn:hover { 
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(188, 19, 254, 1);
+        }
+
+        #adminBtn i {
+            margin-right: 8px;
+        }
+
+        /* Login Button */
+        #loginBtn {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #loginBtn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background: radial-gradient(circle at center, rgba(26,0,51,0.8) 0%, var(--bg-dark) 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(0,243,255,0.3)"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-blue);
+            animation: titleGlow 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 30px var(--neon-blue), 0 0 60px var(--neon-blue); }
+            50% { text-shadow: 0 0 40px var(--neon-purple), 0 0 80px var(--neon-purple); }
+        }
+
+        .hero p { 
+            font-size: 1.8rem; 
+            color: #aaa;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 30px;
+            background: rgba(0,0,0,0.6);
+            border-top: 2px solid var(--neon-blue);
+            border-bottom: 2px solid var(--neon-blue);
+            margin-bottom: 50px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        /* Oyun Grid */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 50px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            border-left: 5px solid var(--neon-blue);
+            padding-left: 20px;
+            text-shadow: 0 0 20px var(--neon-blue);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title i {
+            color: var(--neon-purple);
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #111 100%);
+            border: 2px solid #222;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,243,255,0.1) 0%, rgba(188,19,254,0.1) 100%);
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+        }
+
+        .game-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--neon-blue);
+            box-shadow: 0 20px 50px rgba(0, 243, 255, 0.4);
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: 0.4s;
+        }
+
+        .game-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .game-info { 
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .game-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            margin-top: 10px;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.6);
+            border: 2px solid transparent;
+            text-transform: uppercase;
+        }
+
+        .download-btn:hover { 
+            background: transparent;
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+            box-shadow: 0 0 30px var(--neon-blue);
+        }
+
+        /* Admin Panel Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+            border: 3px solid var(--neon-blue);
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 0 60px rgba(0, 243, 255, 0.5);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2rem;
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            color: var(--neon-purple);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 2px solid #333;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus { 
+            outline: none; 
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: #000; 
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover { 
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+        }
+        
+        .btn-danger { 
+            background: linear-gradient(135deg, #ff006e, #ff0000); 
+            color: #fff; 
+            padding: 8px 15px; 
+            font-size: 0.9rem;
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+        }
+
+        .btn-close { 
+            background: #222; 
+            color: #fff; 
+            float: right;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close:hover {
+            background: var(--neon-pink);
+            transform: rotate(90deg);
+        }
+
+        .admin-game-list { 
+            margin-top: 30px; 
+            max-height: 400px; 
+            overflow-y: auto;
+        }
+
+        .admin-game-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .admin-game-item:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        .admin-game-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .admin-game-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(0deg, #000 0%, transparent 100%);
+            border-top: 2px solid var(--neon-purple);
+            color: #666;
+            margin-top: 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer strong {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .side-character { display: none; }
+            header { padding: 15px 20px; }
+            .logo { font-size: 1.8rem; }
+            nav { gap: 15px; }
+            .hero h1 { font-size: 3rem; }
+            .stats-bar { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Side Characters -->
+    <div class="side-character left">
+        <svg viewBox="0 0 200 600" style="width:100%; height:100%;">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#00f3ff;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#bc13fe;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path d="M 100 50 L 120 150 L 100 200 L 80 150 Z" fill="url(#grad1)" opacity="0.6"/>
+            <circle cx="100" cy="280" r="60" fill="none" stroke="url(#grad1)" stroke-width="3" opacity="0.8"/>
+            <path d="M 100 240 L 100 320 M 60 280 L 140 280" stroke="url(#grad1)" stroke-width="2"/>
+            <path d="M 50 400 Q 100 350 150 400 T 100 550" fill="none" stroke="url(#grad1)" stroke-width="4" opacity="0.6"/>
+        </svg>
+    </div>
+
+    <div class="side-character right">
+        <svg viewBox="0 0 200 600" style="width:100%; height:100%;">
+            <defs>
+                <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#bc13fe;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#ff006e;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path d="M 100 100 L 130 180 L 100 220 L 70 180 Z" fill="url(#grad2)" opacity="0.6"/>
+            <rect x="70" y="250" width="60" height="100" fill="none" stroke="url(#grad2)" stroke-width="3" opacity="0.8" transform="rotate(15 100 300)"/>
+            <circle cx="100" cy="450" r="50" fill="none" stroke="url(#grad2)" stroke-width="3" opacity="0.6"/>
+        </svg>
+    </div>
+
+    <header>
+        <div class="logo">
+            <i class="fas fa-gamepad"></i>
+            Y<span>GameZone</span>
+        </div>
+        <nav>
+            <a href="#"><i class="fas fa-home"></i> Ana Sayfa</a>
+            <a href="#games"><i class="fas fa-gamepad"></i> Oyunlar</a>
+            <a href="#"><i class="fas fa-info-circle"></i> Hakkında</a>
+            
+            <!-- ÇOK BELİRGİN ADMIN BUTONU -->
+            <div class="admin-btn-container">
+                <button id="adminBtn" onclick="openAdmin()">
+                    <i class="fas fa-cog fa-spin"></i> ADMİN PANEL
+                </button>
+                <button id="loginBtn" onclick="openLogin()">
+                    <i class="fas fa-lock"></i> Giriş
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1><i class="fas fa-trophy"></i> GAMEZONE</h1>
+        <p>Geleceğin Oyunlarını Bugün Oyna</p>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number" id="totalGames">0</div>
+            <div class="stat-label">Toplam Oyun</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-label">İndirme</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Aktif Kullanıcı</div>
+        </div>
+    </div>
+
+    <div class="container" id="games">
+        <h2 class="section-title">
+            <i class="fas fa-fire"></i>
+            Popüler Oyunlar
+        </h2>
+        <div class="game-grid" id="gameGrid">
+            <!-- Oyunlar buraya JS ile eklenecek -->
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="btn btn-close" onclick="closeModal('loginModal')">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-user-shield"></i> Admin Girişi</h2>
+            <div class="form-group">
+                <label><i class="fas fa-key"></i> Şifre</label>
+                <input type="password" id="adminPass" placeholder="Şifrenizi girin...">
+            </div>
+            <button class="btn btn-primary" onclick="checkLogin()">
+                <i class="fas fa-sign-in-alt"></i> Giriş Yap
+            </button>
+            <p style="text-align:center; margin-top:20px; color:#555; font-size:0.9rem;">
+                <i class="fas fa-info-circle"></i> Demo Şifre: <strong style="color:var(--neon-blue)">admin123</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <button class="btn btn-close" onclick="closeModal('adminModal')">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-cogs"></i> Oyun Yönetim Paneli</h2>
+            
+            <div class="form-group">
+                <label><i class="fas fa-gamepad"></i> Oyun Adı</label>
+                <input type="text" id="gameName" placeholder="Örn: Cyberpunk 2077">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-image"></i> Oyun Resmi (URL)</label>
+                <input type="text" id="gameImg" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-download"></i> İndirme Linki</label>
+                <input type="text" id="gameLink" placeholder="https://...">
+            </div>
+            <button class="btn btn-primary" onclick="addGame()">
+                <i class="fas fa-plus-circle"></i> Oyun Ekle
+            </button>
+
+            <h3 style="margin-top: 40px; color: var(--neon-purple); font-family: 'Orbitron';">
+                <i class="fas fa-list"></i> Mevcut Oyunlar
+            </h3>
+            <div class="admin-game-list" id="adminGameList">
+                <!-- Admin listesi buraya gelecek -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>Y GameZone</strong>. Tüm Hakları Saklıdır.</p>
+        <p style="margin-top:10px; font-size:0.9rem;">
+            <i class="fas fa-heart" style="color:var(--neon-pink)"></i> 
+            Oyun Aşkıyla Yapıldı
+        </p>
+    </footer>
+
+    <script>
+        // Varsayılan oyunlar
+        const defaultGames = [
+            { 
+                name: "Cyberpunk 2077", 
+                img: "https://image.api.playstation.com/vulcan/ap/rnd/202311/2712/1c7b75d8ed9271516546560d219ad0b22ee0a263b4537bd8.png", 
+                link: "#" 
+            },
+            { 
+                name: "Elden Ring", 
+                img: "https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qZfcRms5qDAk0SI3CM.png", 
+                link: "#" 
+            },
+            { 
+                name: "GTA V", 
+                img: "https://image.api.playstation.com/vulcan/ap/rnd/202202/2816/mYn2ETBTsOQ18Vz9xJ8C1xqO.png", 
+                link: "#" 
+            },
+            { 
+                name: "Red Dead Redemption 2", 
+                img: "https://image.api.playstation.com/vulcan/img/rnd/202010/2217/p3pYq0QxntZQREXRVlAzmn1T.png", 
+                link: "#" 
+            }
+        ];
+
+        let games = JSON.parse(localStorage.getItem('gamezone_games')) || defaultGames;
+        let isAdmin = false;
+
+        // Oyunları Listele
+        function renderGames() {
+            const grid = document.getElementById('gameGrid');
+            const totalGamesEl = document.getElementById('totalGames');
+            grid.innerHTML = '';
+            
+            games.forEach((game, index) => {
+                grid.innerHTML += `
+                    <div class="game-card" style="animation: fadeIn 0.5s ease-in ${index * 0.1}s both;">
+                        <img src="${game.img}" alt="${game.name}" onerror="this.src='https://via.placeholder.com/300x400/000000/00f3ff?text=Oyun+Resmi'">
+                        <div class="game-info">
+                            <h3>${game.name}</h3>
+                            <a href="${game.link}" class="download-btn" target="_blank">
+                                <i class="fas fa-download"></i> Hemen İndir
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            totalGamesEl.textContent = games.length;
+            renderAdminList();
+        }
+
+        // Admin Listesini Güncelle
+        function renderAdminList() {
+            const list = document.getElementById('adminGameList');
+            list.innerHTML = '';
+            
+            if(games.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#666; padding:20px;">Henüz oyun eklenmemiş</p>';
+                return;
+            }
+            
+            games.forEach((game, index) => {
+                list.innerHTML += `
+                    <div class="admin-game-item">
+                        <div class="admin-game-info">
+                            <img src="${game.img}" onerror="this.src='https://via.placeholder.com/50'">
+                            <div>
+                                <strong style="color:var(--neon-blue)">${game.name}</strong>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger" onclick="deleteGame(${index})">
+                            <i class="fas fa-trash"></i> Sil
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // Oyun Ekle
+        function addGame() {
+            const name = document.getElementById('gameName').value.trim();
+            const img = document.getElementById('gameImg').value.trim();
+            const link = document.getElementById('gameLink').value.trim();
+
+            if(name && img && link) {
+                games.push({ name, img, link });
+                localStorage.setItem('gamezone_games', JSON.stringify(games));
+                renderGames();
+                
+                // Formu temizle
+                document.getElementById('gameName').value = '';
+                document.getElementById('gameImg').value = '';
+                document.getElementById('gameLink').value = '';
+                
+                // Başarı mesajı
+                showNotification('Oyun başarıyla eklendi! 🎮', 'success');
+            } else {
+                showNotification('Lütfen tüm alanları doldurun! ⚠️', 'error');
+            }
+        }
+
+        // Oyun Sil
+        function deleteGame(index) {
+            if(confirm('Bu oyunu silmek istediğine emin misin?')) {
+                const deletedGame = games[index];
+                games.splice(index, 1);
+                localStorage.setItem('gamezone_games', JSON.stringify(games));
+                renderGames();
+                showNotification(`"${deletedGame.name}" silindi! 🗑️`, 'success');
+            }
+        }
+
+        // Bildirim Göster
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                padding: 20px 30px;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #00f3ff, #bc13fe)' : 'linear-gradient(135deg, #ff006e, #ff0000)'};
+                color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 30px rgba(0,0,0,0.5);
+                z-index: 3000;
+                font-weight: bold;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Giriş İşlemleri
+        function openLogin() {
+            if(isAdmin) { 
+                openAdmin(); 
+                return; 
+            }
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function checkLogin() {
+            const pass = document.getElementById('adminPass').value;
+            if(pass === 'admin123') {
+                isAdmin = true;
+                document.getElementById('adminBtn').style.display = 'block';
+                document.getElementById('loginBtn').style.display = 'none';
+                closeModal('loginModal');
+                openAdmin();
+                document.getElementById('adminPass').value = '';
+                showNotification('Hoş geldin Admin! 👑', 'success');
+            } else {
+                showNotification('Hatalı şifre! ❌', 'error');
+            }
+        }
+
+        function openAdmin() {
+            if(!isAdmin) {
+                openLogin();
+                return;
+            }
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Modal dışına tıklayınca kapat
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Animasyonlar için CSS ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Başlangıçta çalıştır
+        renderGames();
+        
+        // Sayfa yüklendiğinde animasyon
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
