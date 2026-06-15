@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ygamzezone | Premium Oyun Mağazası</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #13131f;
+            --bg-modal: rgba(19, 19, 31, 0.95);
+            --accent: #6366f1; /* Premium Indigo */
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --text-main: #f8fafc;
+            --text-sec: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: var(--bg-dark); 
+            color: var(--text-main); 
+            line-height: 1.6;
+        }
+
+        /* Header & Nav */
+        header { 
+            background: rgba(10, 10, 15, 0.8); 
+            backdrop-filter: blur(12px);
+            padding: 1rem 2rem; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        nav { display: flex; gap: 1.5rem; }
+        nav a { 
+            color: var(--text-sec); 
+            text-decoration: none; 
+            font-size: 0.95rem; 
+            font-weight: 500; 
+            transition: color 0.3s; 
+        }
+        nav a:hover { color: var(--text-main); }
+        
+        .header-right { display: flex; align-items: center; gap: 1.2rem; }
+        .support { font-size: 0.85rem; color: var(--text-sec); display: flex; align-items: center; gap: 0.4rem; }
+        
+        .btn { 
+            padding: 0.6rem 1.2rem; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 0.9rem;
+            transition: all 0.3s ease; 
+        }
+        .btn-admin { 
+            background: rgba(255,255,255,0.05); 
+            color: var(--text-main); 
+            border: 1px solid var(--border); 
+        }
+        .btn-admin:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+
+        /* Main Container & Grid */
+        .container { max-width: 1280px; margin: 3rem auto; padding: 0 1.5rem; }
+        .section-title { font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 700; }
+        
+        .game-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+            gap: 1.5rem; 
+        }
+        
+        .game-card { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border);
+            border-radius: 12px; 
+            overflow: hidden; 
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; 
+        }
+        .game-card:hover { 
+            transform: translateY(-6px); 
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15); 
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .game-thumb { 
+            height: 160px; 
+            background: linear-gradient(135deg, #1e1e2e, #2d2d44); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 3.5rem; 
+        }
+        
+        .game-info { padding: 1.2rem; }
+        .game-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .game-price { color: var(--success); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; }
+        
+        .btn-buy { 
+            background: var(--accent); 
+            color: #fff; 
+            width: 100%; 
+            padding: 0.7rem;
+            font-size: 0.95rem;
+        }
+        .btn-buy:hover { background: var(--accent-hover); }
+
+        /* Modals (Glassmorphism) */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(4px);
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000; 
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.active { display: flex; opacity: 1; }
+        
+        .modal-content { 
+            background: var(--bg-modal); 
+            padding: 2rem; 
+            border-radius: 16px; 
+            width: 90%; 
+            max-width: 440px; 
+            text-align: center; 
+            position: relative; 
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal.active .modal-content { transform: scale(1); }
+        
+        .close { 
+            position: absolute; 
+            top: 16px; 
+            right: 20px; 
+            cursor: pointer; 
+            font-size: 1.5rem; 
+            color: var(--text-sec); 
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .close:hover { color: var(--text-main); }
+        
+        .modal h2 { margin-bottom: 1rem; color: var(--text-main); font-size: 1.4rem; }
+        .modal p { margin: 0.6rem 0; color: var(--text-sec); }
+        
+        .payment-badge { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 0.6rem 1rem; 
+            border-radius: 8px; 
+            margin: 1rem 0; 
+            font-weight: 600;
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .btn-pay-action { 
+            background: var(--success); 
+            color: #fff; 
+            width: 100%; 
+            margin-top: 1rem; 
+            font-size: 1rem; 
+            padding: 0.8rem;
+        }
+        .btn-pay-action:hover { background: #059669; }
+        .btn-pay-action:disabled { background: #475569; cursor: not-allowed; }
+
+        .btn-dl { 
+            background: linear-gradient(135deg, var(--accent), #8b5cf6); 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 0.8rem; 
+            border-radius: 8px; 
+            display: inline-block; 
+            width: 100%; 
+            margin-top: 1rem; 
+            font-weight: 700; 
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        .btn-dl:hover { filter: brightness(1.1); }
+        
+        .hidden { display: none !important; }
+        
+        /* Admin Forms */
+        .form-group { margin-bottom: 1rem; text-align: left; }
+        .form-label { display: block; font-size: 0.85rem; color: var(--text-sec); margin-bottom: 0.4rem; }
+        .form-input, .form-select { 
+            width: 100%; 
+            padding: 0.7rem; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); 
+            color: var(--text-main); 
+            border-radius: 8px; 
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus, .form-select:focus { 
+            outline: none; 
+            border-color: var(--accent); 
+        }
+        .form-select option { background: var(--bg-card); }
+        
+        .admin-hint {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .btn-primary { background: var(--accent); color: #fff; width: 100%; padding: 0.8rem; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-main); width: 100%; margin-top: 0.5rem; border: 1px solid var(--border); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Ygamzezone</div>
+        <nav>
+            <a href="#">Ana Sayfa</a>
+            <a href="#">Yeni Çıkanlar</a>
+            <a href="#">En Çok İndirilenler</a>
+            <a href="#">Kütüphanem</a>
+        </nav>
+        <div class="header-right">
+            <span class="support">✉️ support@ygamzezone.com</span>
+            <button class="btn btn-admin" onclick="openModal('adminLoginModal')">Admin Giriş</button>
+        </div</header>
+
+    <main class="container">
+        <h2 class="section-title">🔥 Öne Çıkan Oyunlar</h2>
+        <div class="game-grid" id="gameGrid">
+            <!-- Oyunlar JS ile buraya yüklenecek -->
+        </div>
+    </main>
+
+    <!-- Ödeme Modalı -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('paymentModal')">&times;</span>
+            <h2>💳 Güvenli Ödeme</h2>
+            <p id="payGameName" style="font-size: 1.2rem; color: var(--text-main); font-weight: 600;"></p>
+            <p style="font-size: 1.4rem; color: var(--success); font-weight: 700;" id="payGamePrice"></p>
+            
+            <div class="payment-badge">
+                <span id="payMethodIcon">💳</span>
+                <span id="payMethodName">Kredi Kartı</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-sec);">Ödemeniz 256-bit SSL ile korunmaktadır.</p>
+            
+            <button class="btn btn-pay-action" id="payBtn" onclick="processPayment()">Ödemeyi Tamamla</button>
+            <a id="downloadLink" class="btn-dl hidden" href="#" target="_blank">📥 Oyunu Hemen İndir</a>
+        </div>
+    </div>
+
+    <!-- Admin Giriş Modalı -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('adminLoginModal')">&times;</span>
+            <h2>🔐 Yönetici Girişi</h2>
+            <div class="admin-hint">
+                💡 Unuttuysanız: <strong>Kullanıcı:</strong> admin | <strong>Şifre:</strong> admin123
+            </div>
+            <div class="form-group">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input type="text" class="form-input" id="adminUser" placeholder="admin">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Şifre</label>
+                <input type="password" class="form-input" id="adminPass" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" onclick="adminLogin()">Giriş Yap</button>
+            <button class="btn btn-secondary" onclick="closeModal('adminLoginModal')">Kapat</button>
+        </div>
+    </div>
+
+    <!-- Oyun Ekleme Modalı (Sadece giriş yapınca açılır) -->
+    <div id="addGameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addGameModal')">&times;</span>
+            <h2>🎮 Yeni Oyun Ekle</h2>
+            <div class="form-group">
+                <label class="form-label">Oyun Adı</label>
+                <input type="text" class="form-input" id="newGameTitle" placeholder="Örn: Cyber Odyssey">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Fiyat (₺)</label>
+                <input type="text" class="form-input" id="newGamePrice" placeholder="Örn: 149.90">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Ödeme Yöntemi (Müşteriye görünecek)</label>
+                <select class="form-select" id="newGamePayment">
+                    <option value="Kredi Kartı">💳 Kredi Kartı</option>
+                    <option value="Havale / EFT">🏦 Havale / EFT</option>
+                    <option value="Papara">📱 Papara</option>
+                    <option value="Kripto Para">₿ Kripto Para</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="addNewGame()">Oyunu Ekle</button>
+            <button class="btn btn-secondary" onclick="closeModal('addGameModal')">Kapat</button>
+        </div>
+    </div>
+
+    <script>
+        // Başlangıç Oyun Verisi (Ödeme yöntemi artık her oyuna özel)
+        let games = [
+            { id: 1, title: "Cyber Odyssey", price: "₺149.90", icon: "🎮", paymentMethod: "Kredi Kartı" },
+            { id: 2, title: "Shadow Realm", price: "₺89.90", icon: "🕹️", paymentMethod: "Havale / EFT" },
+            { id: 3, title: "Pixel Racers", price: "₺49.90", icon: "🏎️", paymentMethod: "Papara" },
+            { id: 4, title: "Galactic Wars", price: "₺199.90", icon: "🚀", paymentMethod: "Kripto Para" }
+        ];
+
+        let selectedGame = null;
+        let isAdmin = false;
+        const gameGrid = document.getElementById('gameGrid');
+
+        // Oyunları Ekrana Bas
+        function renderGames() {
+            gameGrid.innerHTML = '';
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                // Ana sayfada ödeme yöntemi YOK, sadece "Satın Al" var.
+                card.innerHTML = `
+                    <div class="game-thumb">${game.icon}</div>
+                    <div class="game-info">
+                        <div class="game-title">${game.title}</div>
+                        <div class="game-price">${game.price}</div>
+                        <button class="btn btn-buy" onclick="openPayment(${game.id})">Satın Al</button>
+                    </div>
+                `;
+                gameGrid.appendChild(card);
+            });
+        }
+        renderGames();
+
+        // Modal Yönetimi
+        function openModal(id) { 
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+        
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                // Ödeme modalı kapanınca sıfırla
+                if(id === 'paymentModal') {
+                    document.getElementById('payBtn').classList.remove('hidden');
+                    document.getElementById('downloadLink').classList.add('hidden');
+                    document.getElementById('payBtn').textContent = 'Ödemeyi Tamamla';
+                    document.getElementById('payBtn').disabled = false;
+                }
+            }, 300);
+        }
+
+        // Ödeme Modalını Aç (Ana sayfada ödeme yöntemi görünmez, burada görünür)
+        function openPayment(gameId) {
+            selectedGame = games.find(g => g.id === gameId);
+            document.getElementById('payGameName').textContent = selectedGame.title;
+            document.getElementById('payGamePrice').textContent = selectedGame.price;
+            
+            // Seçilen oyunun ödeme yöntemini dinamik olarak göster
+            const method = selectedGame.paymentMethod;
+            let icon = "💳";
+            if(method.includes("Havale")) icon = "🏦";
+            if(method.includes("Papara")) icon = "📱";
+            if(method.includes("Kripto")) icon = "₿";
+            
+            document.getElementById('payMethodIcon').textContent = icon;
+            document.getElementById('payMethodName').textContent = method;
+            
+            openModal('paymentModal');
+        }
+
+        // Ödeme Simülasyonu
+        function processPayment() {
+            const btn = document.getElementById('payBtn');
+            btn.textContent = 'Ödeme İşleniyor...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.classList.add('hidden');
+                const dlBtn = document.getElementById('downloadLink');
+                dlBtn.href = `https://ygamzezone.com/indir/${selectedGame.id}?token=secure_${Date.now()}`;
+                dlBtn.textContent = `📥 ${selectedGame.title} - İndirmeyi Başlat`;
+                dlBtn.classList.remove('hidden');
+            }, 2000);
+        }
+
+        // Admin Giriş Simülasyonu
+        function adminLogin() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            // Unutmamanız için belirlenen sabit bilgiler:
+            if (user === 'admin' && pass === 'admin123') {
+                isAdmin = true;
+                closeModal('adminLoginModal');
+                alert('✅ Başarıyla giriş yapıldı!');
+                // Giriş başarılı olunca "Oyun Ekle" butonunu header'a ekleyelim
+                if (!document.getElementById('addGameBtn')) {
+                    const addBtn = document.createElement('button');
+                    addBtn.id = 'addGameBtn';
+                    addBtn.className = 'btn btn-admin';
+                    addBtn.style.borderColor = 'var(--success)';
+                    addBtn.style.color = 'var(--success)';
+                    addBtn.textContent = '🎮 Oyun Ekle';
+                    addBtn.onclick = () => openModal('addGameModal');
+                    document.querySelector('.header-right').insertBefore(addBtn, document.querySelector('.btn-admin'));
+                }
+            } else {
+                alert('❌ Hatalı kullanıcı adı veya şifre!\n\n💡 İpucu: Kullanıcı: admin | Şifre: admin123');
+            }
+        }
+
+        // Yeni Oyun Ekleme
+        function addNewGame() {
+            const title = document.getElementById('newGameTitle').value;
+            const price = document.getElementById('newGamePrice').value;
+            const payment = document.getElementById('newGamePayment').value;
+
+            if (!title || !price) {
+                alert('Lütfen tüm alanları doldurun.');
+                return;
+            }
+
+            const newId = games.length > 0 ? Math.max(...games.map(g => g.id)) + 1 : 1;
+            games.push({
+                id: newId,
+                title: title,
+                price: `₺${price}`,
+                icon: "🎲",
+                paymentMethod: payment
+            });
+
+            renderGames();
+            closeModal('addGameModal');
+            
+            // Formu temizle
+            document.getElementById('newGameTitle').value = '';
+            document.getElementById('newGamePrice').value = '';
+            alert('✅ Oyun başarıyla eklendi! Ana sayfada görebilirsiniz.');
+        }
+
+        // Dışarı tıklayınca modal kapat
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal')) {
+                closeModal(e.target.id);
+            }
+        }
+    </script>
+</body>
+</html>
