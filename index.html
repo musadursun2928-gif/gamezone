@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Y GameZone - Premium Oyun İndirme Platformu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff88;
+            --fire-orange: #ff5e00;
+            --fire-yellow: #ffcc00;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(188, 19, 254, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px; z-index: -3; animation: gridMove 25s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(0deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(0deg) translateY(80px); }
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.08));
+            background-size: 100% 4px; z-index: 9999; pointer-events: none; opacity: 0.15;
+        }
+
+        .bg-glow {
+            position: fixed; width: 400px; height: 400px; border-radius: 50%;
+            filter: blur(200px); opacity: 0.15; z-index: -2; animation: glowMove 15s ease-in-out infinite;
+        }
+        .bg-glow-1 { background: var(--neon-blue); top: -150px; left: -100px; }
+        .bg-glow-2 { background: var(--neon-purple); bottom: -150px; right: -100px; animation-delay: 6s; }
+        @keyframes glowMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .lang-switcher {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 8px; z-index: 1001; background: rgba(0, 0, 0, 0.4); padding: 6px 12px;
+            border-radius: 25px; border: 1px solid rgba(0, 243, 255, 0.3); backdrop-filter: blur(10px);
+        }
+        .lang-btn {
+            padding: 7px 18px; border: 1px solid rgba(255, 255, 255, 0.2); background: transparent;
+            color: rgba(255, 255, 255, 0.6); border-radius: 18px; cursor: pointer; font-weight: 700;
+            transition: all 0.3s; font-size: 0.85rem;
+        }
+        .lang-btn.active { background: rgba(0, 243, 255, 0.2); border-color: var(--neon-blue); color: #fff; }
+        .lang-btn:hover:not(.active) { border-color: var(--neon-blue); color: var(--neon-blue); }
+
+        .top-alert {
+            position: fixed; top: 75px; left: 20px; background: rgba(0, 15, 8, 0.85);
+            border: 1px solid var(--neon-green); color: #fff; padding: 14px 22px; border-radius: 12px;
+            backdrop-filter: blur(15px); display: flex; align-items: center; gap: 14px;
+            z-index: 998; box-shadow: 0 0 15px rgba(0, 255, 136, 0.15); animation: slideInLeft 0.6s ease; max-width: 400px;
+        }
+        .top-alert span { font-size: 0.9rem; font-weight: 600; line-height: 1.5; }
+        .top-alert button {
+            background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff;
+            width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; font-size: 0.8rem;
+        }
+        .top-alert button:hover { border-color: var(--neon-pink); color: var(--neon-pink); }
+        @keyframes slideInLeft { from { transform: translateX(-150%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* HEADER & LOGO */
+        header { 
+            text-align: center; 
+            padding: 55px 20px 40px; 
+            position: relative; 
+            z-index: 100; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            gap: 15px; 
+        }
+
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            width: 100%;
+        }
+        
+        /* ÖZEL Y LOGOSU - ALEVLİ VE CANLI */
+        .custom-y-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--fire-orange), var(--fire-yellow));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Arial Black', sans-serif;
+            position: relative;
+            box-shadow: 0 0 30px var(--fire-orange), inset 0 0 20px rgba(255,255,255,0.5);
+            animation: logoPulse 2s infinite alternate, floatLogo 3s ease-in-out infinite;
+            transform: skew(-10deg);
+            border: 2px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+
+        .custom-y-logo::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: -5px; right: -5px; bottom: -5px;
+            background: linear-gradient(45deg, var(--fire-orange), transparent, var(--fire-yellow));
+            z-index: -1;
+            border-radius: 25px;
+            filter: blur(15px);
+            opacity: 0.7;
+            animation: fireGlow 1.5s infinite alternate;
+        }
+
+        @keyframes logoPulse {
+            0% { transform: skew(-10deg) scale(1); box-shadow: 0 0 20px var(--fire-orange); }
+            100% { transform: skew(-10deg) scale(1.05); box-shadow: 0 0 50px var(--fire-orange), 0 0 20px var(--fire-yellow); }
+        }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: skew(-10deg) translateY(0); }
+            50% { transform: skew(-10deg) translateY(-10px); }
+        }
+
+        @keyframes fireGlow {
+            0% { opacity: 0.5; filter: blur(10px); }
+            100% { opacity: 0.8; filter: blur(20px); }
+        }
+
+        .logo-container { position: relative; display: inline-block; text-align: left; }
+        .logo {
+            font-size: 4.5rem; 
+            font-weight: 1000; 
+            text-transform: uppercase; 
+            letter-spacing: -2px; 
+            background: linear-gradient(45deg, #fff, #ccc);
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            position: relative; 
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+            display: block;
+            line-height: 1;
+        }
+        
+        .tagline { 
+            margin-top: 8px; 
+            font-size: 0.9rem; 
+            color: var(--neon-blue); 
+            letter-spacing: 3px; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        /* CANLI DURUM PANELİ - GERÇEK VERİ */
+        .live-status-panel {
+            display: flex;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-top: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: pulseDot 1.5s infinite;
+        }
+
+        .status-dot.blue {
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        @keyframes pulseDot {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .character-container {
+            position: fixed; top: 50%; transform: translateY(-50%); width: 350px; height: 700px;
+            z-index: 1; opacity: 0.7; pointer-events: none; display: flex; align-items: center; justify-content: center;
+        }
+        .character-left { left: -30px; background: radial-gradient(ellipse at center, rgba(220, 39, 67, 0.15) 0%, transparent 70%); }
+        .character-right { right: -30px; background: radial-gradient(ellipse at center, rgba(139, 69, 19, 0.15) 0%, transparent 70%); }
+        .character-img {
+            width: 100%; height: 100%; object-fit: contain;
+            filter: drop-shadow(0 0 20px currentColor) brightness(1.1) contrast(1.1); animation: characterFloat 8s ease-in-out infinite;
+        }
+        .character-left .character-img { color: #dc2743; }
+        .character-right .character-img { color: #8b4513; }
+        @keyframes characterFloat { 0%, 100% { transform: translateY(0px) rotate(-1deg); } 50% { transform: translateY(-20px) rotate(1deg); } }
+
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 30px 20px; position: relative; z-index: 10; }
+
+        .auth-buttons { position: fixed; top: 20px; right: 20px; display: flex; gap: 12px; z-index: 1000; }
+        .auth-btn {
+            padding: 10px 22px; border: 1px solid rgba(0, 243, 255, 0.4); background: rgba(0, 243, 255, 0.08);
+            color: var(--neon-blue); border-radius: 25px; cursor: pointer; font-weight: 700; transition: all 0.3s;
+            backdrop-filter: blur(10px); font-size: 0.85rem; letter-spacing: 1px;
+        }
+        .auth-btn:hover { background: rgba(0, 243, 255, 0.2); border-color: var(--neon-blue); transform: translateY(-2px); }
+        .auth-btn.primary { background: linear-gradient(45deg, rgba(0, 243, 255, 0.3), rgba(188, 19, 254, 0.3)); color: #fff; border: 1px solid rgba(188, 19, 254, 0.5); }
+        .auth-btn.primary:hover { background: linear-gradient(45deg, rgba(0, 243, 255, 0.4), rgba(188, 19, 254, 0.4)); }
+
+        .user-info { display: none; align-items: center; gap: 12px; background: rgba(0, 243, 255, 0.1); padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(0, 243, 255, 0.4); backdrop-filter: blur(10px); }
+        .user-info.show { display: flex; }
+        .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 1rem; }
+        .logout-btn { background: rgba(255, 0, 0, 0.15); border: 1px solid rgba(255, 0, 0, 0.4); color: #ff4444; padding: 8px 14px; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-weight: 700; font-size: 0.85rem; }
+        .logout-btn:hover { background: rgba(255, 0, 0, 0.3); }
+
+        .admin-panel {
+            display: none; background: rgba(188, 19, 254, 0.05); border: 1px solid rgba(188, 19, 254, 0.3);
+            border-radius: 20px; padding: 40px; margin-bottom: 40px; backdrop-filter: blur(15px);
+        }
+        .admin-panel.active { display: block; animation: slideDown 0.4s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-group { margin-bottom: 25px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 10px; color: var(--neon-blue); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px 20px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px; color: #fff; font-size: 1rem; transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--neon-blue); background: rgba(0, 0, 0, 0.7); }
+        
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; cursor: pointer; }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--neon-blue); cursor: pointer; }
+        .checkbox-group label { margin: 0; color: rgba(255,255,255,0.7); font-size: 0.9rem; font-weight: 500; text-transform: none; cursor: pointer; }
+
+        .submit-btn {
+            background: linear-gradient(45deg, rgba(188, 19, 254, 0.5), rgba(0, 243, 255, 0.5));
+            color: #fff; border: none; padding: 16px 50px; border-radius: 25px; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.3s; font-weight: 800; letter-spacing: 2px; width: 100%; margin-top: 10px; text-transform: uppercase;
+        }
+        .submit-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
+
+        .search-container { max-width: 550px; margin: 40px auto; position: relative; }
+        .search-input {
+            width: 100%; padding: 18px 55px 18px 25px; background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 40px; color: #fff;
+            font-size: 1rem; backdrop-filter: blur(10px); transition: all 0.3s;
+        }
+        .search-input:focus { outline: none; border-color: var(--neon-blue); background: rgba(0, 0, 0, 0.7); }
+        .search-btn {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 243, 255, 0.3); border: none; width: 42px; height: 42px; border-radius: 50%;
+            cursor: pointer; color: var(--neon-blue); font-size: 1.1rem; transition: all 0.3s;
+        }
+        .search-btn:hover { background: rgba(0, 243, 255, 0.5); }
+
+        .games-section { margin-top: 60px; }
+        .section-title {
+            text-align: center; font-size: 2.5rem; margin-bottom: 45px; color: #fff;
+            position: relative; display: inline-block; left: 50%; transform: translateX(-50%); font-weight: 900;
+        }
+        .section-title::after {
+            content: ''; position: absolute; bottom: -12px; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.4), transparent);
+        }
+
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 35px; padding: 20px; }
+        .game-card {
+            background: var(--glass-bg); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px;
+            overflow: hidden; transition: all 0.3s ease; backdrop-filter: blur(10px); cursor: pointer; position: relative;
+        }
+        .game-card:hover { transform: translateY(-8px) scale(1.02); border-color: rgba(0, 243, 255, 0.3); }
+        
+        .game-image-container { 
+            width: 100%; 
+            height: 200px; 
+            overflow: hidden; 
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2); 
+            position: relative; 
+            background: #111; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-image { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: all 0.4s; 
+            display: block; 
+        }
+        .game-card:hover .game-image { transform: scale(1.1); filter: brightness(1.1); }
+        
+        .game-info { padding: 22px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+        .game-title { font-size: 1.4rem; margin-bottom: 12px; color: #fff; font-weight: 800; }
+        .game-description { color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; line-height: 1.6; }
+
+        .delete-btn {
+            position: absolute; top: 12px; right: 12px; background: rgba(255, 0, 0, 0.7); color: #fff;
+            border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            font-weight: 800; font-size: 1.2rem; transition: all 0.3s; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .delete-btn:hover { background: #ff0000; transform: scale(1.1); }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: #1a1a2e; border: 1px solid rgba(0, 243, 255, 0.2); border-radius: 20px;
+            padding: 45px; max-width: 650px; width: 90%; position: relative; animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .close-modal {
+            position: absolute; top: 18px; right: 22px; font-size: 2rem; cursor: pointer; color: rgba(255,255,255,0.4);
+            transition: all 0.3s; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+        }
+        .close-modal:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .modal-title { font-size: 2.2rem; margin-bottom: 25px; color: #fff; font-weight: 900; }
+        .modal-image { width: 100%; height: 320px; object-fit: cover; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .download-btn {
+            display: block; width: 100%; padding: 18px; background: linear-gradient(45deg, rgba(0, 243, 255, 0.3), rgba(188, 19, 254, 0.3));
+            border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; color: #fff; font-size: 1.2rem; font-weight: 800; cursor: pointer;
+            margin-top: 25px; transition: all 0.3s; text-transform: uppercase; letter-spacing: 3px;
+        }
+        .download-btn:hover { transform: translateY(-2px); background: linear-gradient(45deg, rgba(0, 243, 255, 0.4), rgba(188, 19, 254, 0.4)); }
+
+        .auth-modal .modal-content { max-width: 480px; text-align: center; }
+        .auth-tabs { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .auth-tab { flex: 1; padding: 15px; background: transparent; border: none; color: rgba(255, 255, 255, 0.5); font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; position: relative; text-transform: uppercase; }
+        .auth-tab.active { color: var(--neon-blue); }
+        .auth-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--neon-blue); }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .stats-section {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px;
+            margin: 60px 0; padding: 35px; background: rgba(255, 255, 255, 0.03); border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .stat-item { text-align: center; padding: 20px; }
+        .stat-number { font-size: 3.2rem; font-weight: 1000; color: #fff; margin-bottom: 8px; }
+        .stat-label { color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; }
+
+        .contact-section { margin-top: 70px; padding: 50px; background: rgba(255, 255, 255, 0.03); border-radius: 18px; border: 1px solid rgba(0, 243, 255, 0.15); }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; margin-top: 25px; }
+        .contact-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 15px; padding: 35px; text-align: center; transition: all 0.3s; }
+        .contact-card:hover { transform: translateY(-8px); border-color: rgba(0, 243, 255, 0.3); }
+        .contact-card.instagram:hover { border-color: rgba(255, 0, 255, 0.3); }
+        .contact-icon { font-size: 3rem; margin-bottom: 20px; color: var(--neon-blue); }
+        .contact-card.instagram .contact-icon { color: #dc2743; }
+        .contact-title { font-size: 1.5rem; margin-bottom: 12px; color: #fff; font-weight: 800; }
+        .contact-link {
+            display: inline-block; margin-top: 15px; padding: 14px 28px; background: rgba(0, 243, 255, 0.15); color: var(--neon-blue);
+            text-decoration: none; border-radius: 25px; font-weight: 700; transition: all 0.3s; border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+        .contact-card.instagram .contact-link { background: rgba(220, 39, 67, 0.15); color: #dc2743; border-color: rgba(220, 39, 67, 0.3); }
+        .contact-link:hover { transform: translateY(-2px); filter: brightness(1.3); }
+
+        @media (max-width: 1024px) {
+            .character-container { display: none; }
+            .logo { font-size: 3.5rem; }
+            .top-alert { left: 50%; transform: translateX(-50%); top: 70px; max-width: 90%; }
+        }
+        @media (max-width: 768px) {
+            .header-top-row { flex-direction: column; gap: 15px; }
+            .logo { font-size: 2.5rem; text-align: center; }
+            .logo-container { text-align: center; }
+            .games-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
+            .auth-buttons { flex-direction: column; gap: 8px; top: 10px; right: 10px; }
+            .lang-switcher { top: 65px; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .live-status-panel { flex-direction: column; gap: 10px; padding: 15px; }
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+        .notification {
+            position: fixed; top: 90px; right: 20px; background: rgba(0, 0, 0, 0.95);
+            color: #fff; padding: 18px 28px; border-radius: 12px; font-weight: 700; font-size: 1rem;
+            z-index: 5000; animation: slideInRight 0.4s ease; border: 1px solid var(--neon-green);
+        }
+        .notification.error { border-color: #ff4444; background: rgba(50, 0, 0, 0.95); color: #ff8888; }
+        @keyframes slideInRight { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="scanlines"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="lang-switcher">
+        <button class="lang-btn active" onclick="changeLanguage('tr')">TR</button>
+        <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+    </div>
+
+    <div class="top-alert" id="topAlert">
+        <span><i class="fas fa-heart" style="color: var(--neon-pink);"></i> <span data-i18n="supportText">Bize destek olmak için oyunumuzu indirerek destek olabilirsiniz!</span></span>
+        <button onclick="closeAlert()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="character-container character-left">
+        <img src="https://image.api.playstation.com/vulcan/img/rnd/202010/2217/p3pYq0QxntZQREXRVdAzmn1w.png" alt="RDR" class="character-img" onerror="this.style.display='none'">
+    </div>
+    <div class="character-container character-right">
+        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/capsule_616x353.jpg" alt="RDR" class="character-img" onerror="this.style.display='none'">
+    </div>
+
+    <div class="auth-buttons" id="authButtons">
+        <button class="auth-btn" onclick="openAuthModal('login')"><i class="fas fa-sign-in-alt"></i> <span data-i18n="login">GİRİŞ</span></button>
+        <button class="auth-btn primary" onclick="openAuthModal('register')"><i class="fas fa-user-plus"></i> <span data-i18n="register">KAYIT</span></button>
+    </div>
+
+    <div class="auth-buttons" id="userInfo" style="display: none;">
+        <div class="user-info show">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <span id="userName">Kullanıcı</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Çıkış</span></button>
+        </div>
+    </div>
+
+    <!-- HEADER WITH CUSTOM Y LOGO & LIVE STATUS -->
+    <header>
+        <div class="header-top-row">
+            <div class="custom-y-logo">Y</div>
+            <div class="logo-container">
+                <h1 class="logo">GameZone</h1>
+                <p class="tagline" data-i18n="tagline">PREMIUM OYUN İNDİRME PLATFORMU</p>
+            </div>
+        </div>
+
+        <!-- CANLI DURUM PANELİ - GERÇEK VERİ -->
+        <div class="live-status-panel">
+            <div class="status-item">
+                <div class="status-dot"></div>
+                <span><span id="totalMembers">0</span> Toplam Üye</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot blue"></div>
+                <span>Kayıtlar Açık</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="admin-panel" id="adminPanel">
+            <h2 style="color: var(--neon-purple); margin-bottom: 25px; text-align: center; font-size: 1.8rem; font-weight: 900;">
+                <i class="fas fa-gamepad"></i> <span data-i18n="addGame">YENİ OYUN EKLE</span>
+            </h2>
+            <form id="gameForm">
+                <div class="form-group">
+                    <label><i class="fas fa-heading"></i> <span data-i18n="gameName">Oyun Adı</span></label>
+                    <input type="text" id="gameName" required placeholder="Örn: Cyberpunk 2077">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> <span data-i18n="gameImage">Oyun Resmi URL</span></label>
+                    <input type="url" id="gameImage" required placeholder="https://example.com/resim.jpg">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-link"></i> <span data-i18n="downloadLink">İndirme Linki</span></label>
+                    <input type="url" id="downloadLink" required placeholder="https://example.com/download">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> <span data-i18n="description">Açıklama</span></label>
+                    <textarea id="gameDesc" rows="3" required placeholder="Oyun hakkında kısa açıklama..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-rocket"></i> <span data-i18n="addGameBtn">OYUNU EKLE</span></button>
+            </form>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-item"><div class="stat-number" id="totalGames">0</div><div class="stat-label" data-i18n="totalGames">TOPLAM OYUN</div></div>
+            <div class="stat-item"><div class="stat-number">50K+</div><div class="stat-label" data-i18n="totalDownloads">TOPLAM İNDİRME</div></div>
+            <div class="stat-item"><div class="stat-number">24/7</div><div class="stat-label" data-i18n="activeSupport">AKTİF DESTEK</div></div>
+            <div class="stat-item"><div class="stat-number">%100</div><div class="stat-label" data-i18n="secureLink">GÜVENLİ LİNK</div></div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Oyun ara..." onkeyup="searchGames()">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <section class="games-section">
+            <h2 class="section-title"><i class="fas fa-trophy"></i> <span data-i18n="popularGames">POPÜLER OYUNLAR</span></h2>
+            <div class="games-grid" id="gamesGrid"></div>
+        </section>
+
+        <section class="contact-section">
+            <h2 class="section-title" style="margin-bottom: 20px;"><i class="fas fa-headset"></i> <span data-i18n="contactSupport">İLETİŞİM</span></h2>
+            <p style="text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 25px; font-size: 1rem;" data-i18n="contactText">Bize aşağıdaki kanallardan ulaşabilirsiniz</p>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                    <h3 class="contact-title" data-i18n="emailSupport">E-Posta</h3>
+                    <a href="mailto:destek@ygamezone.com" class="contact-link"><i class="fas fa-paper-plane"></i> destek@ygamezone.com</a>
+                </div>
+                <div class="contact-card instagram">
+                    <div class="contact-icon"><i class="fab fa-instagram"></i></div>
+                    <h3 class="contact-title">Instagram</h3>
+                    <a href="https://instagram.com/musa_drsnnn" target="_blank" class="contact-link"><i class="fab fa-instagram"></i> @musa_drsnnn</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('gameModal')">&times;</span>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <img src="" alt="" class="modal-image" id="modalImage">
+            <p id="modalDesc" style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 1rem;"></p>
+            <button class="download-btn" id="downloadBtn"><i class="fas fa-download"></i> <span data-i18n="downloadNow">İNDİR</span></button>
+        </div>
+    </div>
+
+    <div class="modal auth-modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('authModal')">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')"><span data-i18n="login">GİRİŞ</span></button>
+                <button class="auth-tab" onclick="switchAuthTab('register')"><span data-i18n="register">KAYIT</span></button>
+            </div>
+            
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> <span data-i18n="email">E-Posta</span></label>
+                    <input type="email" id="loginEmail" required placeholder="ornek@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> <span data-i18n="password">Şifre</span></label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe" data-i18n="rememberMe">Beni 3 gün hatırla</label>
+                </div>
+
+                <button type="submit" class="submit-btn"><i class="fas fa-sign-in-alt"></i> <span data-i18n="login">GİRİŞ</span></button>
+            </form>
+
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> <span data-i18n="username">Kullanıcı Adı</span></label>
+                    <input type="text" id="registerUsername" required placeholder="Kullanıcı adınız">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> <span data-i18n="email">E-Posta</span></label>
+                    <input type="email" id="registerEmail" required placeholder="ornek@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> <span data-i18n="password">Şifre</span></label>
+                    <input type="password" id="registerPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i> <span data-i18n="register">KAYIT</span></button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            tr: {
+                supportText: "Bize destek olmak için oyunumuzu indirerek destek olabilirsiniz!",
+                login: "GİRİŞ", register: "KAYIT", logout: "Çıkış", tagline: "PREMIUM OYUN İNDİRME PLATFORMU",
+                addGame: "YENİ OYUN EKLE", gameName: "Oyun Adı", gameImage: "Oyun Resmi URL",
+                downloadLink: "İndirme Linki", description: "Açıklama", addGameBtn: "OYUNU EKLE",
+                totalGames: "TOPLAM OYUN", totalDownloads: "TOPLAM İNDİRME", activeSupport: "AKTİF DESTEK",
+                secureLink: "GÜVENLİ LİNK", popularGames: "POPÜLER OYUNLAR", contactSupport: "İLETİŞİM",
+                contactText: "Bize aşağıdaki kanallardan ulaşabilirsiniz", emailSupport: "E-Posta",
+                email: "E-Posta", password: "Şifre", username: "Kullanıcı Adı", rememberMe: "Beni 3 gün hatırla",
+                downloadNow: "İNDİR", searchPlaceholder: "Oyun ara...",
+                downloadStarted: "⬇️ İndirme sayfasına yönlendiriliyorsunuz!", gameAdded: "✅ Oyun eklendi!",
+                gameDeleted: "🗑️ Oyun silindi!", loginSuccess: "✅ Giriş başarılı!", 
+                emailNotFound: "❌ Bu e-posta adresi kayıtlı değil!",
+                wrongPassword: "❌ Yanlış şifre girdiniz!",
+                registerSuccess: "✅ Kayıt başarılı!", emailExists: "❌ Bu e-posta zaten kayıtlı!",
+                logoutSuccess: "👋 Çıkış yapıldı!",
+                sessionExpired: "⚠️ Oturum süreniz doldu, lütfen tekrar giriş yapın.",
+                deleteConfirm: "Bu oyunu silmek istediğine emin misin?"
+            },
+            en: {
+                supportText: "You can support us by downloading our game!",
+                login: "LOGIN", register: "REGISTER", logout: "Logout", tagline: "PREMIUM GAME DOWNLOAD PLATFORM",
+                addGame: "ADD NEW GAME", gameName: "Game Name", gameImage: "Game Image URL",
+                downloadLink: "Download Link", description: "Description", addGameBtn: "ADD GAME",
+                totalGames: "TOTAL GAMES", totalDownloads: "TOTAL DOWNLOADS", activeSupport: "ACTIVE SUPPORT",
+                secureLink: "SECURE LINK", popularGames: "POPULAR GAMES", contactSupport: "CONTACT",
+                contactText: "You can reach us through the following channels", emailSupport: "Email",
+                email: "Email", password: "Password", username: "Username", rememberMe: "Remember me for 3 days",
+                downloadNow: "DOWNLOAD", searchPlaceholder: "Search games...",
+                downloadStarted: "⬇️ Redirecting to download page!", gameAdded: "✅ Game added!",
+                gameDeleted: "🗑️ Game deleted!", loginSuccess: "✅ Login successful!",
+                emailNotFound: "❌ This email is not registered!",
+                wrongPassword: "❌ Wrong password!",
+                registerSuccess: "✅ Registration successful!", emailExists: "❌ Email already registered!",
+                logoutSuccess: "👋 Logged out!",
+                sessionExpired: "⚠️ Your session has expired, please login again.",
+                deleteConfirm: "Are you sure you want to delete this game?"
+            }
+        };
+
+        let currentLang = 'tr';
+        let games = JSON.parse(localStorage.getItem('yGameZoneGames')) || [];
+        const ADMIN_PASSWORD = 'admin123';
+        let isAdmin = false;
+        let currentUser = null;
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateTexts();
+        }
+
+        function updateTexts() {
+            const t = translations[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+        }
+
+        function t(key) { return translations[currentLang][key] || key; }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadGames();
+            updateStats();
+            updateMemberCount(); // Sayfa açılınca üye sayısını güncelle
+            
+            if (localStorage.getItem('alertClosed') === 'true') {
+                document.getElementById('topAlert').style.display = 'none';
+            }
+
+            document.getElementById('gameForm').addEventListener('submit', (e) => { e.preventDefault(); addGame(); });
+            document.getElementById('loginForm').addEventListener('submit', (e) => { e.preventDefault(); login(); });
+            document.getElementById('registerForm').addEventListener('submit', (e) => { e.preventDefault(); register(); });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'G' || e.key === 'g')) {
+                    e.preventDefault();
+                    toggleAdmin();
+                }
+            });
+        });
+
+        // GERÇEK ÜYE SAYISI FONKSİYONU
+        function updateMemberCount() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const countElement = document.getElementById('totalMembers');
+            // Gerçek kayıt sayısını al
+            countElement.textContent = users.length;
+        }
+
+        function checkAuth() {
+            const savedUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (savedUser) {
+                const now = Date.now();
+                if (savedUser.expiresIn && now > savedUser.expiresIn) {
+                    localStorage.removeItem('currentUser');
+                    showNotification(t('sessionExpired'), 'error');
+                    currentUser = null;
+                } else {
+                    currentUser = savedUser;
+                }
+            } else {
+                currentUser = null;
+            }
+
+            if (currentUser) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userName').textContent = currentUser.username || currentUser.email.split('@')[0];
+                document.getElementById('userAvatar').textContent = (currentUser.username || currentUser.email)[0].toUpperCase();
+            } else {
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userInfo').style.display = 'none';
+            }
+        }
+
+        function closeAlert() {
+            document.getElementById('topAlert').style.display = 'none';
+            localStorage.setItem('alertClosed', 'true');
+        }
+
+        function openAuthModal(tab) { document.getElementById('authModal').style.display = 'flex'; switchAuthTab(tab); }
+        
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            if (tab === 'login') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            const user = users.find(u => u.email === email);
+            if (!user) {
+                showNotification(t('emailNotFound'), 'error');
+                return;
+            }
+
+            if (user.password !== password) {
+                showNotification(t('wrongPassword'), 'error');
+                return;
+            }
+
+            const loginData = { email: user.email, username: user.username };
+
+            if (rememberMe) {
+                loginData.expiresIn = Date.now() + (3 * 24 * 60 * 60 * 1000);
+            } else {
+                loginData.expiresIn = Date.now() + (24 * 60 * 60 * 1000);
+            }
+
+            localStorage.setItem('currentUser', JSON.stringify(loginData));
+            checkAuth();
+            closeModal('authModal');
+            showNotification(t('loginSuccess'));
+            document.getElementById('loginForm').reset();
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            if (users.find(u => u.email === email)) { 
+                showNotification(t('emailExists'), 'error'); 
+                return; 
+            }
+            
+            users.push({ username, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Kayıt olunca üye sayısını hemen güncelle
+            updateMemberCount();
+
+            const loginData = {
+                email: email,
+                username: username,
+                expiresIn: Date.now() + (24 * 60 * 60 * 1000)
+            };
+            localStorage.setItem('currentUser', JSON.stringify(loginData));
+            
+            checkAuth(); 
+            closeModal('authModal');
+            showNotification(t('registerSuccess'));
+            document.getElementById('registerForm').reset();
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            checkAuth();
+            showNotification(t('logoutSuccess'));
+        }
+
+        function toggleAdmin() {
+            if (!isAdmin) {
+                const password = prompt('🔐 Şifre:');
+                if (password === ADMIN_PASSWORD) {
+                    isAdmin = true;
+                    document.getElementById('adminPanel').classList.add('active');
+                    loadGames();
+                    document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    showNotification('🔓 Admin paneli açıldı!');
+                } else if (password !== null) { 
+                    showNotification(t('wrongPassword'), 'error'); 
+                }
+            } else {
+                isAdmin = false;
+                document.getElementById('adminPanel').classList.remove('active');
+                loadGames();
+                showNotification('🔒 Admin paneli kapatıldı!');
+            }
+        }
+
+        function addGame() {
+            games.push({
+                id: Date.now(),
+                name: document.getElementById('gameName').value,
+                image: document.getElementById('gameImage').value,
+                link: document.getElementById('downloadLink').value,
+                desc: document.getElementById('gameDesc').value,
+            });
+            localStorage.setItem('yGameZoneGames', JSON.stringify(games));
+            document.getElementById('gameForm').reset();
+            showNotification(t('gameAdded'));
+            loadGames();
+            updateStats();
+        }
+
+        function deleteGame(id, event) {
+            event.stopPropagation();
+            if (confirm(t('deleteConfirm'))) {
+                games = games.filter(game => game.id !== id);
+                localStorage.setItem('yGameZoneGames', JSON.stringify(games));
+                showNotification(t('gameDeleted'));
+                loadGames();
+                updateStats();
+            }
+        }
+
+        function searchGames() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.game-card').forEach(card => {
+                const text = (card.querySelector('.game-title').textContent + card.querySelector('.game-description').textContent).toLowerCase();
+                card.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        }
+
+        function loadGames() {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+
+            // TAMAMEN BOŞ KALSIN
+            if (games.length === 0) {
+                return;
+            }
+
+            games.forEach((game, index) => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s both`;
+                
+                const fallbackImage = "https://via.placeholder.com/400x250/1a1a2e/00f3ff?text=RESIM+YOK";
+                
+                card.innerHTML = `
+                    ${isAdmin ? `<button class="delete-btn" onclick="deleteGame(${game.id}, event)"><i class="fas fa-times"></i></button>` : ''}
+                    <div class="game-image-container">
+                        <img src="${game.image}" alt="${game.name}" class="game-image" 
+                             onerror="this.onerror=null; this.src='${fallbackImage}'; this.style.objectFit='contain'; this.style.padding='20px';">
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">${game.name}</h3>
+                        <p class="game-description">${game.desc}</p>
+                    </div>
+                `;
+                card.onclick = (e) => { if (!e.target.closest('.delete-btn')) openModal(game); };
+                grid.appendChild(card);
+            });
+        }
+
+        function updateStats() {
+            const el = document.getElementById('totalGames');
+            if (el) {
+                let current = 0;
+                const target = games.length;
+                const timer = setInterval(() => {
+                    current += (target / 30);
+                    if (current >= target) { el.textContent = target; clearInterval(timer); }
+                    else { el.textContent = Math.floor(current); }
+                }, 40);
+            }
+        }
+
+        function openModal(game) {
+            document.getElementById('modalTitle').textContent = game.name;
+            document.getElementById('modalImage').src = game.image;
+            document.getElementById('modalDesc').textContent = game.desc;
+            document.getElementById('downloadBtn').onclick = () => {
+                window.open(game.link, '_blank');
+                showNotification(t('downloadStarted'));
+            };
+            document.getElementById('gameModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showNotification(message, type = 'success') {
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            const notification = document.createElement('div');
+            notification.className = 'notification' + (type === 'error' ? ' error' : '');
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.remove(); }, 3000);
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
